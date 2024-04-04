@@ -45,11 +45,20 @@
         </div>
       </div>
     </div>
-    <a
-      class="text-blue-500 underline"
-      href="https://sfrecpark.org/Facilities/Facility/Details/North-Beach-Pool-218"
-      >Link to official North Beach Pool Website</a
-    >
+    <ul class="text-blue-700 underline">
+      <li class="my-2">
+        <a
+          href="https://sfrecpark.org/Facilities/Facility/Details/North-Beach-Pool-218"
+          >Official North Beach Pool Website</a
+        >
+      </li>
+      <li>
+        <a href="https://github.com/reidjs/north-beach-pool"
+          >Contact author or report issues on GitHub</a
+        >
+      </li>
+    </ul>
+    <h3 class="underline text-blue-500 mb-4"></h3>
   </div>
 </template>
 
