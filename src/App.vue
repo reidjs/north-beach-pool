@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <h1>North Beach Pool Schedule</h1>
+    <h1>Unofficial North Beach Pool Schedule</h1>
     <h2>Spring 2024</h2>
   </div>
   <div class="py-4 px-2">
@@ -30,8 +30,8 @@
             v-for="event in events[day]"
             class="border border-gray-400 p-1 my-2 min-w-24 w-24 text-sm mr-2"
             :class="{
-              'text-orange-500 border-orange-500':
-                isNearTimeRange(event.start, event.end, 24 * 60) &&
+              'text-orange-500 border-orange-500 font-bold':
+                isNearTimeRange(event.start, event.end, 60 * 24) &&
                 day === currentDay,
             }"
           >
@@ -123,35 +123,32 @@ function isNearTimeRange(startTime, endTime, timeDiffMins = 60) {
   const now = new Date();
   const currentHour = now.getHours();
   const currentMinute = now.getMinutes();
-  const isAM = currentHour < 12;
+  const currentTotalMinutes = currentHour * 60 + currentMinute;
 
-  const currentMinutes = currentHour * 60 + currentMinute;
-
-  const startTimeParts = startTime.split(":");
-  const startHour = parseInt(startTimeParts[0]);
-  const startMinute = parseInt(startTimeParts[1]);
-  const startMinutes = startHour * 60 + startMinute;
-
-  const endTimeParts = endTime.split(":");
-  const endHour = parseInt(endTimeParts[0]);
-  const endMinute = parseInt(endTimeParts[1]);
-  const endMinutes = endHour * 60 + endMinute;
-  const endIsAM = endTime.split(" ")[1] === "AM";
-  const endIsPM = !endIsAM;
-
-  const endTimeLaterThanCurrentTime =
-    (isAM && endIsPM) ||
-    currentHour < endHour ||
-    (currentHour === endHour && currentMinute < endMinute);
-
-  if (
-    endTimeLaterThanCurrentTime &&
-    (Math.abs(currentMinutes - startMinutes) <= timeDiffMins ||
-      Math.abs(currentMinutes - endMinutes) <= timeDiffMins)
-  ) {
-    return true;
-  } else {
-    return false;
+  const startTimeParts = startTime.split(" ");
+  let startHour = parseInt(startTimeParts[0].split(":")[0]);
+  const startMinute = parseInt(startTimeParts[0].split(":")[1]);
+  if (startTimeParts[1] === "PM" && startHour !== 12) {
+    startHour += 12;
   }
+  const startTotalMinutes = startHour * 60 + startMinute;
+
+  const endTimeParts = endTime.split(" ");
+  let endHour = parseInt(endTimeParts[0].split(":")[0]);
+  const endMinute = parseInt(endTimeParts[0].split(":")[1]);
+  if (endTimeParts[1] === "PM" && endHour !== 12) {
+    endHour += 12;
+  }
+  const endTotalMinutes = endHour * 60 + endMinute;
+
+  // Check if current time is earlier than start time
+  if (currentTotalMinutes < endTotalMinutes) {
+    // Check if the difference between start time and current time is within the specified time difference
+    if (endTotalMinutes - currentTotalMinutes <= timeDiffMins) {
+      return true;
+    }
+  }
+
+  return false;
 }
 </script>
