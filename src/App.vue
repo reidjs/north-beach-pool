@@ -1,13 +1,14 @@
 <template>
   <div class="text-center">
-    <h1>Unofficial North Beach Pool Schedule</h1>
+    <h1>Unofficial North Beach Pool Lap Swimming Schedule</h1>
     <h2>Spring 2024</h2>
   </div>
   <div class="py-4 px-2">
-    <div class="">
+    <div class="w-fit">
       <div
         v-for="day in Object.keys(events)"
-        class="mr-4 border-b border-black"
+        class="mr-4 border-b border-black w-full"
+        :class="{ 'bg-blue-50': day === currentDay }"
       >
         <span
           :class="{ 'text-orange-500 font-bold': day === currentDay }"
@@ -28,7 +29,7 @@
         <div class="flex">
           <div
             v-for="event in events[day]"
-            class="border border-gray-400 p-1 my-2 min-w-24 w-24 text-sm mr-2"
+            class="border border-gray-400 p-1 my-2 min-w-24 w-24 text-sm mr-2 rounded-md"
             :class="{
               'text-orange-500 border-orange-500 font-bold':
                 isNearTimeRange(event.start, event.end, 60 * 24) &&
